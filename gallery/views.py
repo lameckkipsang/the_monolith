@@ -25,12 +25,12 @@ def exhibition_home(request):
         "tags": tags,
         "selected_tag": selected_tag,
     }
-    return render(request, 'gallery/homepage.html', context)
+    return render(request, 'homepage.html', context)
 
 def artwork_detail(request, artwork_id):
     """Displays a single artwork's details."""
     artwork = get_object_or_404(Artwork, id=artwork_id)
-    return render(request, 'gallery/artwork_detail.html', {"artwork": artwork})
+    return render(request, 'artwork_detail.html', {"artwork": artwork})
 
 def register_curator(request):
     """Handles new user signups and logs them in immediately."""
@@ -52,7 +52,8 @@ def register_curator(request):
     else:
         form = CuratorRegistrationForm()
 
-    return render(request, 'gallery/signup.html', {"form": form})
+    return render(request, 'signup.html', {"form": form})
+    
 
 @login_required
 def curator_profile(request):
@@ -76,4 +77,4 @@ def curator_profile(request):
         "account_form": account_form,
         "profile_form": profile_form,
     }
-    return render(request, 'gallery/profile.html', context)
+    return render(request, 'homepage.html', context)
