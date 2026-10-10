@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Exhibition - The Monolith{% endblock %}
+
+{% block content %}
+    <h1>The Monolith Gallery Exhibition</h1>
+
+    <div>
+        <a href="{% url 'home' %}">All Artworks</a>
+        {% for tag in tags %}
+            <a href="?tag={{ tag.name }}">{{ tag.name }}</a>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <div>
+        {% for artwork in artworks %}
+            <div>
+                <h3><a href="{% url 'artwork_detail' artwork.id %}">{{ artwork.title }}</a></h3>
+                <p>{{ artwork.description }}</p>
+                {% if artwork.image_file %}
+                    <img src="{{ artwork.image_file.url }}" alt="{{ artwork.title }}" width="300">
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No artworks found in this exhibition.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
