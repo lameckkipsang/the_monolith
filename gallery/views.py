@@ -40,8 +40,7 @@ def register_curator(request):
         form = CuratorRegistrationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
-            # Ensure field matches your model (usually 'user' instead of 'user_account')
-            CuratorProfile.objects.get_or_create(user=new_user)
+            CuratorProfile.objects.get_or_create(user_account=new_user)
             
             login(request, new_user)
             messages.success(request, f"Welcome to The Monolith, Curator {new_user.username}!")
@@ -57,7 +56,7 @@ def register_curator(request):
 @login_required
 def curator_profile(request):
     """Allows a logged-in user to view and update their profile."""
-    profile, created = CuratorProfile.objects.get_or_create(user=request.user)
+    profile, created = CuratorProfile.objects.get_or_create(user_account=request.user)
 
     if request.method == "POST":
         account_form = EditAccountForm(request.POST, instance=request.user)
