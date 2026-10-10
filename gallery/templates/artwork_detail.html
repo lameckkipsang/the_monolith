@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ artwork.title }} - The Monolith{% endblock %}
+
+{% block content %}
+    <a href="{% url 'home' %}">&larr; Back to Exhibition</a>
+    <h1>{{ artwork.title }}</h1>
+    <p>{{ artwork.description }}</p>
+    
+    {% if artwork.image_file %}
+        <img src="{{ artwork.image_file.url }}" alt="{{ artwork.title }}" width="500">
+    {% endif %}
+    
+    <p><small>Uploaded by: {{ artwork.uploaded_by.username }} on {{ artwork.created_at }}</small></p>
+{% endblock %}
