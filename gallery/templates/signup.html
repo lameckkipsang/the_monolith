@@ -1,13 +1,22 @@
 {% extends 'base.html' %}
+{% load socialaccount %}
 
 {% block title %}Sign Up - The Monolith{% endblock %}
 
 {% block content %}
     <h2>Register as a Curator</h2>
+    
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Sign Up</button>
+        <button type="submit" class="btn">Sign Up</button>
     </form>
-    <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+
+    <hr style="margin: 2rem 0; border:0; border-top:1px solid #e6e2dd;">
+
+    <a href="{% provider_login_url 'google' %}" class="btn" style="display:inline-block; text-align:center;">
+        Sign up with Google
+    </a>
+
+    <p style="margin-top: 1.5rem;">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
 {% endblock %}
