@@ -76,3 +76,13 @@ def curator_profile(request):
         "profile_form": profile_form,
     }
     return render(request, 'profile.html', context)
+
+@login_required
+def toggle_like(request, artwork_id):
+    """Toggles a like on an artwork for the logged-in user."""
+    artwork = get_object_or_404(Artwork, id=artwork_id)
+    if request.user in artwork.likes.all():
+        artwork.likes.remove(request.user)
+    else:
+        artwork.likes.add(request.user)
+    return redirect('artwork_detail', artwork_id=artwork.id)

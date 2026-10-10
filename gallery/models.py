@@ -17,3 +17,7 @@ class Artwork(models.Model):
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='artworks')
     tags = models.ManyToManyField(CategoryTag, related_name='artworks', blank=True)
     favorites = models.ManyToManyField(User, related_name='favorited_artworks', blank=True)
+    likes = models.ManyToManyField(User, related_name='liked_artworks', blank=True)
+
+    def total_likes(self):
+        return self.likes.count()
