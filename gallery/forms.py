@@ -10,7 +10,7 @@ class CuratorRegistrationForm(UserCreationForm):
         fields = ['username', 'email']
 
 class EditAccountForm(forms.ModelForm):
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(disabled=True, required=True, help_text="Email cannot be changed directly.")
     class Meta:
         model = User
         fields = ['username', 'email']
