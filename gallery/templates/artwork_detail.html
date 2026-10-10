@@ -3,13 +3,36 @@
 {% block title %}{{ artwork.title }} - The Monolith{% endblock %}
 
 {% block content %}
-    <a href="{% url 'home' %}">&larr; Back to Exhibition</a>
-    <h1>{{ artwork.title }}</h1>
-    <p>{{ artwork.description }}</p>
-    
-    {% if artwork.image_file %}
-        <img src="{{ artwork.image_file.url }}" alt="{{ artwork.title }}" width="500">
-    {% endif %}
-    
-    <p><small>Uploaded by: {{ artwork.uploaded_by.username }} on {{ artwork.created_at }}</small></p>
+    <div style="max-width: 800px; margin: 0 auto;">
+        <a href="{% url 'home' %}" style="color: var(--espresso, #3b2f2f); text-decoration: none;">&larr; Back to Exhibition</a>
+        
+        <h1 style="margin-top: 1rem;">{{ artwork.title }}</h1>
+        <p>{{ artwork.description }}</p>
+        
+        {% if artwork.image_file %}
+            <img src="{{ artwork.image_file.url }}" alt="{{ artwork.title }}" style="width: 100%; height: auto; margin: 1.5rem 0;">
+        {% endif %}
+        
+        <p><small>Uploaded by: {{ artwork.uploaded_by.username }} on {{ artwork.created_at }}</small></p>
+        <div style="margin-top: 2rem; display: flex; align-items: center; gap: 1rem; border-top: 1px solid #e6e2dd; padding-top: 1.5rem;">
+            {% if request.user.is_authenticated %}
+                <form action="{% url 'toggle_like' artwork.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn" style="background-color: var(--terracotta, #b85d36); color: #fff; border: none; padding: 0.5rem 1.2rem; cursor: pointer; border-radius: 4px;">
+                        {% if request.user in artwork.likes.all %}
+                            ♥ Liked
+                        {% else %}
+                            ♡ Like
+                        {% endif %}
+                    </button>
+                </form>
+            {% else %}
+                <p><a href="{% url 'login' %}">Log in</a> to like this artwork.</p>
+            {% endif %}
+            
+            <span style="font-style: italic; color: var(--espresso, #3b2f2f);">
+                {{ artwork.total_likes }} Curator{{ artwork.total_likes|pluralize }} appreciate this piece.
+            </span>
+        </div>
+    </div>
 {% endblock %}
