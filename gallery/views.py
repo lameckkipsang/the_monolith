@@ -12,7 +12,6 @@ def exhibition_home(request):
     selected_tag = request.GET.get('tag')
     
     if selected_tag:
-        # filter by category name
         tag_object = get_object_or_404(CategoryTag, name__iexact=selected_tag)
         artworks = tag_object.artworks.all()
     else:
@@ -41,8 +40,8 @@ def register_curator(request):
         form = CuratorRegistrationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
-            # Explicitly create their profile right after registration
-            CuratorProfile.objects.get_or_create(user_account=new_user)
+            # Ensure field matches your model (usually 'user' instead of 'user_account')
+            CuratorProfile.objects.get_or_create(user=new_user)
             
             login(request, new_user)
             messages.success(request, f"Welcome to The Monolith, Curator {new_user.username}!")
@@ -58,11 +57,11 @@ def register_curator(request):
 @login_required
 def curator_profile(request):
     """Allows a logged-in user to view and update their profile."""
-    user = request.user
+    profile, created = CuratorProfile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
-        account_form = EditAccountForm(request.POST, instance=user)
-        profile_form = EditProfileForm(request.POST, request.FILES, instance=user.profile)
+        account_form = EditAccountForm(request.POST, instance=request.user)
+        profile_form = EditProfileForm(request.POST, request.FILES, instance=profile)
 
         if account_form.is_valid() and profile_form.is_valid():
             account_form.save()
@@ -70,11 +69,11 @@ def curator_profile(request):
             messages.success(request, "Profile updated successfully!")
             return redirect('profile')
     else:
-        account_form = EditAccountForm(instance=user)
-        profile_form = EditProfileForm(instance=user.profile)
+        account_form = EditAccountForm(instance=request.user)
+        profile_form = EditProfileForm(instance=profile)
 
     context = {
         "account_form": account_form,
         "profile_form": profile_form,
     }
-    return render(request, 'homepage.html', context)
+    return render(request, 'profile.html', context)
