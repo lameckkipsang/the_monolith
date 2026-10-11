@@ -13,25 +13,20 @@
             </div>
         {% endif %}
 
-        <!-- Edit Profile Form -->
-        <form method="post" enctype="multipart/form-data" style="margin-top: 1.5rem;">
-            {% csrf_token %}
-            
-            <div style="margin-bottom: 1rem;">
-                {{ account_form.as_p }}
-            </div>
-            
-            <div style="margin-bottom: 1rem;">
-                {{ profile_form.as_p }}
-            </div>
+        <div style="margin-top: 1.5rem;">
+            <p><strong>Username:</strong> {{ request.user.username }}</p>
+            <p><strong>Email:</strong> {{ request.user.email }}</p>
+            <p><strong>Biography:</strong> {{ profile.biography|default:"No biography added yet." }}</p>
+        </div>
 
-            <button type="submit" class="btn" style="background-color: var(--terracotta, #b85d36); color: #fff; border: none; padding: 0.6rem 1.5rem; cursor: pointer; border-radius: 4px; font-weight: bold;">
-                Save Changes
-            </button>
-        </form>
-
-        <hr style="margin: 1.5rem 0; border-color: #e6e2dd;">
-
-        <a href="{% url 'home' %}" style="color: var(--espresso, #3b2f2f); text-decoration: none;">&larr; Back to Exhibition</a>
+        <!-- Action Buttons -->
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; align-items: center;">
+            <a href="{% url 'edit_profile' %}" class="btn" style="background-color: var(--terracotta, #b85d36); color: #fff; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                Edit Profile
+            </a>
+            <a href="{% url 'home' %}" style="color: var(--espresso, #3b2f2f); text-decoration: none;">
+                &larr; Back to Exhibition
+            </a>
+        </div>
     </div>
 {% endblock %}
