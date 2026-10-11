@@ -1,19 +1,26 @@
 {% extends 'base.html' %}
 
-{% block title %}Profile - The Monolith{% endblock %}
+{% block title %}Curator Profile - The Monolith{% endblock %}
 
 {% block content %}
-    <h2>Your Curator Profile</h2>
-    <a href="{% url 'home' %}">&larr; Back to Exhibition</a>
+    <div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background-color: var(--parchment, #fbf7f4); border: 1px solid var(--espresso, #3b2f2f); border-radius: 8px;">
+        <h2>Curator Profile</h2>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <h3>Account Information</h3>
-        {{ account_form.as_p }}
-        
-        <h3>Profile Details</h3>
-        {{ profile_form.as_p }}
-        
-        <button type="submit">Update Profile</button>
-    </form>
+        <!-- Profile Avatar  -->
+        {% if profile.avatar %}
+            <div style="margin: 1.5rem 0;">
+                <img src="{{ profile.avatar.url }}" alt="{{ request.user.username }}'s Avatar" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 2px solid var(--terracotta, #b85d36);">
+            </div>
+        {% else %}
+            <p>No avatar uploaded yet.</p>
+        {% endif %}
+
+        <p><strong>Username:</strong> {{ request.user.username }}</p>
+        <p><strong>Email:</strong> {{ request.user.email }}</p>
+        <p><strong>Biography:</strong> {{ profile.biography }}</p>
+
+        <hr style="margin: 1.5rem 0; border-color: #e6e2dd;">
+
+        <a href="{% url 'home' %}" style="color: var(--espresso, #3b2f2f);">&larr; Back to Exhibition</a>
+    </div>
 {% endblock %}

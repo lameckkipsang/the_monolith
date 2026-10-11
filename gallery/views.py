@@ -55,7 +55,7 @@ def register_curator(request):
 
 @login_required
 def curator_profile(request):
-    """Allows a logged-in user to view and update their profile."""
+    """Allows a logged-in user to view and update their profile and avatar."""
     profile, created = CuratorProfile.objects.get_or_create(user_account=request.user)
 
     if request.method == "POST":
@@ -67,11 +67,14 @@ def curator_profile(request):
             profile_form.save()
             messages.success(request, "Profile updated successfully!")
             return redirect('profile')
+        else:
+            messages.error(request, "Please correct the errors below.")
     else:
         account_form = EditAccountForm(instance=request.user)
         profile_form = EditProfileForm(instance=profile)
 
     context = {
+        "profile": profile,
         "account_form": account_form,
         "profile_form": profile_form,
     }
@@ -86,3 +89,8 @@ def toggle_like(request, artwork_id):
     else:
         artwork.likes.add(request.user)
     return redirect('artwork_detail', artwork_id=artwork.id)
+
+@login_required
+def profile_view(request):
+    profile, created = CuratorProfile.objects.get_or_create(user_account=request.user)
+    return render(request, 'profile.html', {'profile': profile})
