@@ -6,21 +6,32 @@
     <div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background-color: var(--parchment, #fbf7f4); border: 1px solid var(--espresso, #3b2f2f); border-radius: 8px;">
         <h2>Curator Profile</h2>
 
-        <!-- Profile Avatar  -->
+        <!-- Avatar Display -->
         {% if profile.avatar %}
-            <div style="margin: 1.5rem 0;">
+            <div style="margin: 1.5rem 0; text-align: center;">
                 <img src="{{ profile.avatar.url }}" alt="{{ request.user.username }}'s Avatar" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 2px solid var(--terracotta, #b85d36);">
             </div>
-        {% else %}
-            <p>No avatar uploaded yet.</p>
         {% endif %}
 
-        <p><strong>Username:</strong> {{ request.user.username }}</p>
-        <p><strong>Email:</strong> {{ request.user.email }}</p>
-        <p><strong>Biography:</strong> {{ profile.biography }}</p>
+        <!-- Edit Profile Form -->
+        <form method="post" enctype="multipart/form-data" style="margin-top: 1.5rem;">
+            {% csrf_token %}
+            
+            <div style="margin-bottom: 1rem;">
+                {{ account_form.as_p }}
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                {{ profile_form.as_p }}
+            </div>
+
+            <button type="submit" class="btn" style="background-color: var(--terracotta, #b85d36); color: #fff; border: none; padding: 0.6rem 1.5rem; cursor: pointer; border-radius: 4px; font-weight: bold;">
+                Save Changes
+            </button>
+        </form>
 
         <hr style="margin: 1.5rem 0; border-color: #e6e2dd;">
 
-        <a href="{% url 'home' %}" style="color: var(--espresso, #3b2f2f);">&larr; Back to Exhibition</a>
+        <a href="{% url 'home' %}" style="color: var(--espresso, #3b2f2f); text-decoration: none;">&larr; Back to Exhibition</a>
     </div>
 {% endblock %}
